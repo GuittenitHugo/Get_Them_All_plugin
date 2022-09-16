@@ -1,0 +1,6 @@
+name: Get them all
+version: '${project.version}'
+main: com.ideagle.plugin.GetThemAll
+api-version: 1.19
+authors: [ Ir0n_eagle ]
+description: A plugin aiming at moving and collecting mobs easier, inspired by the pokemon serie
