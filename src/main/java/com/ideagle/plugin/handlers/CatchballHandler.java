@@ -32,9 +32,11 @@ public class CatchballHandler implements Listener {
 
         Bukkit.getPluginManager().registerEvents(this,plugin);
         _mobs = new ArrayList<>();
-        for (String mobtype : (List<String>) GetThemAll._config.getConfig().getList("Mobs.catchable")){
+        for (String mobtype : GetThemAll._config.getConfig().getStringList("Mobs.catchable")){
             String type = mobtype.trim().replace(' ', '_').toUpperCase();
-            _mobs.add(EntityType.valueOf(type));
+            try{
+                _mobs.add(EntityType.valueOf(type));
+            } catch (IllegalArgumentException ignored){}
         }
 
         _isWhiteList = GetThemAll._config.getConfig().getBoolean("Mobs.as_whitelist");
