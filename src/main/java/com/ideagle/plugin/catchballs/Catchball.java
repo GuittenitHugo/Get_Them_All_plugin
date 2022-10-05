@@ -115,8 +115,6 @@ public abstract class Catchball {
         }
         getServer().addRecipe(catchBallRecipe);
 
-        Bukkit.getLogger().info(catchballType+" is type "+ catchballObject._type);
-
     }
 
     public abstract boolean checkDropableOnRelease();
