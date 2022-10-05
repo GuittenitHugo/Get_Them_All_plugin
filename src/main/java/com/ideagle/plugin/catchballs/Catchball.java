@@ -69,23 +69,24 @@ public abstract class Catchball {
 
         ShapedRecipe catchBallRecipe = new ShapedRecipe(NamespacedKey.minecraft(catchballType + "_catchball"), catchball);
 
-        String recipePath = "recipes.crafting_recipes.";
+        String recipePath = "recipes.crafting_recipes."+catchballType+".";
         String[] rowsPaths = {"top_row", "middle_row", "bottom_row"};
 
         String[] rowsItems = {"", "", ""};
         ArrayList<Material> MaterialList = new ArrayList<>();
 
+
         for (int i = 0; i < rowsPaths.length; i++) {
             // Getting path of a recipe row
             String recipeRowPath = recipePath + rowsPaths[i];
+
             // Getting string list in recipe row
             List<String> materialStrings = config.getStringList(recipeRowPath);
 
             for (int j = 0; j < Math.min(3, materialStrings.size()); j++) {
                 // If material is recognized as a real material
                 try {
-                    Material material = Material.valueOf(materialStrings.get(j));
-
+                    Material material = Material.valueOf(materialStrings.get(j).toUpperCase().trim().replace(' ','_'));
                     // Updating MaterialList with new material if it wasn't met before
                     if (!MaterialList.contains(material))
                         MaterialList.add(material);
