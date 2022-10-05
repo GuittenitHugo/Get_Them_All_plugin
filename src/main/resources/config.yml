@@ -1,0 +1,68 @@
+# How many times a basic catchball can be used before breaking
+max_uses: 10
+
+recipes:
+  # If a catchball is craftable
+  allowed_to_craft:
+    brittle : true
+    basic : true
+    perfect : false
+
+  # How a catchball is crafted in the crafting table. Each row is written from left to right.
+  # If there is less than 3 items in a row, the remaining crafting slots will be empty.
+  # If one of the specified items isn't recognized, it will be set as empty by default.
+  crafting_recipes:
+    brittle:
+      top_row:
+        - Diamond
+        - Diamond
+        - Diamond
+      middle_row:
+        - Diamond
+        - Wither skeleton skull
+        - Diamond
+      bottom_row:
+        - Diamond
+        - Diamond
+        - Diamond
+    basic:
+      top_row:
+        - Nothing
+        - Diamond
+        - Nothing
+      middle_row:
+        - Netherite ingot
+        - Nether star
+        - Netherite ingot
+      bottom_row:
+        - Nothing
+        - Diamond
+        - Nothing
+    perfect:
+      top_row:
+        - Bedrock
+        - Bedrock
+        - Bedrock
+      middle_row:
+        - Bedrock
+        - Barrier
+        - Bedrock
+      bottom_row:
+        - Bedrock
+        - Bedrock
+        - Bedrock
+  # How many catchballs are given when crafted
+  crafted_qty:
+    brittle : 1
+    basic : 1
+    perfect : 1
+
+Mobs :
+  # If true, every mob in catchable can be caught
+  # If false, then those mobs can't be caught at all
+  as_whitelist : false
+  # A list of mobs that can or can't be caught
+  catchable :
+    - Warden
+    - Wither
+    - Ender Dragon
