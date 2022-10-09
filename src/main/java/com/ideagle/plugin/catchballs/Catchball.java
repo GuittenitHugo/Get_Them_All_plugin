@@ -148,7 +148,7 @@ public abstract class Catchball {
             }
 
             if (_mobNbt.hasKey("Owner")){
-                String ownerName = Bukkit.getPlayer(_mobNbt.getUUID("Owner")).getName();
+                String ownerName = Bukkit.getOfflinePlayer(_mobNbt.getUUID("Owner")).getName();
                 lore.add("[{\"text\":\" - Owner : \",\"color\":\"gold\",\"italic\":false},{\"text\":\"" + ownerName + "\",\"color\":\"white\",\"italic\":false}]");
             }
 
