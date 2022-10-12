@@ -140,7 +140,7 @@ public class CatchballHandler implements Listener {
                             if (catchBallData._type == BrittleCatchball.TYPE)
                                 ((BrittleCatchball) catchBallData)._used = true;
 
-                            Location spawnLocation = hitBlock.getLocation().add(0.5, 1, 0.5);
+                            Location spawnLocation = hitBlock.getRelative(e.getHitBlockFace()).getLocation().add(0.5, 0, 0.5);
 
                             EntityType entityType = catchBallData._mobType;
 
