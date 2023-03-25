@@ -3,8 +3,11 @@ package com.ideagle.plugin;
 import com.ideagle.plugin.catchballs.BasicBall;
 import com.ideagle.plugin.catchballs.BrittleBall;
 import com.ideagle.plugin.catchballs.PerfectBall;
+import com.ideagle.plugin.commands.completions.GiveBallCommandCompletion;
+import com.ideagle.plugin.commands.executors.GiveBallCommandExecutor;
 import com.ideagle.plugin.handlers.CatchballHandler;
 import com.ideagle.plugin.util.ConfigUtils;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class GetThemAll extends JavaPlugin {
@@ -28,6 +31,12 @@ public final class GetThemAll extends JavaPlugin {
             PerfectBall.initCraftingRecipe();
 
         new CatchballHandler(this);
+
+        PluginCommand giveballCommand = getCommand("giveball");
+        if(giveballCommand != null) {
+            giveballCommand.setExecutor(new GiveBallCommandExecutor());
+            giveballCommand.setTabCompleter(new GiveBallCommandCompletion());
+        }
 
 
     }
