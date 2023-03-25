@@ -1,10 +1,10 @@
 package com.ideagle.plugin.handlers;
 
 import com.ideagle.plugin.GetThemAll;
-import com.ideagle.plugin.catchballs.BasicCatchball;
-import com.ideagle.plugin.catchballs.BrittleCatchball;
+import com.ideagle.plugin.catchballs.BasicBall;
+import com.ideagle.plugin.catchballs.BrittleBall;
 import com.ideagle.plugin.catchballs.Catchball;
-import com.ideagle.plugin.catchballs.PerfectCatchball;
+import com.ideagle.plugin.catchballs.PerfectBall;
 import de.tr7zw.nbtapi.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -67,16 +67,16 @@ public class CatchballHandler implements Listener {
                         .getCompound("get_them_all_data")
                         .getInteger("type")){
                     case 1 :
-                        catchBallData = new BasicCatchball(snowballProjectileNBT);
+                        catchBallData = new BasicBall(snowballProjectileNBT);
                         break;
                     case 2:
-                        catchBallData = new BrittleCatchball(snowballProjectileNBT);
+                        catchBallData = new BrittleBall(snowballProjectileNBT);
                         break;
                     case 3:
-                        catchBallData = new PerfectCatchball(snowballProjectileNBT);
+                        catchBallData = new PerfectBall(snowballProjectileNBT);
                         break;
                     default:
-                        catchBallData = new BasicCatchball(snowballProjectileNBT);
+                        catchBallData = new BasicBall(snowballProjectileNBT);
                 }
 
 
@@ -159,13 +159,13 @@ public class CatchballHandler implements Listener {
                                 || (!_mobs.contains(catchBallData._mobType) && !_isWhiteList))
                                 || shooter.hasPermission("getthemall.catchball.releaseforbiddenmob")) {
 
-                            if (catchBallData._type == BasicCatchball.TYPE) {
-                                assert catchBallData instanceof BasicCatchball;
-                                ((BasicCatchball) catchBallData)._useCount++;
+                            if (catchBallData._type == BasicBall.TYPE) {
+                                assert catchBallData instanceof BasicBall;
+                                ((BasicBall) catchBallData)._useCount++;
                             }
-                            if (catchBallData._type == BrittleCatchball.TYPE) {
-                                assert catchBallData instanceof BrittleCatchball;
-                                ((BrittleCatchball) catchBallData)._used = true;
+                            if (catchBallData._type == BrittleBall.TYPE) {
+                                assert catchBallData instanceof BrittleBall;
+                                ((BrittleBall) catchBallData)._used = true;
                             }
 
                             Location spawnLocation = hitBlock.getRelative(e.getHitBlockFace()).getLocation().add(0.5, 0, 0.5);

@@ -5,33 +5,30 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 
 import static org.bukkit.Bukkit.getServer;
 
-public class BasicCatchball extends Catchball {
+public class BasicBall extends Catchball {
 
     public static int TYPE = 1;
     public int _useCount;
 
-    public BasicCatchball(NBTEntity nbtEntity) {
+    public BasicBall(NBTEntity nbtEntity) {
         super(nbtEntity);
         NBTCompound nbtData = nbtEntity.getCompound("Item").getCompound("tag").getCompound("get_them_all_data");
         _useCount = nbtData.getInteger("use_count");
         _type = TYPE;
     }
 
-    public BasicCatchball(){
+    public BasicBall(){
         super();
         _useCount=0;
         _type = TYPE;
     }
 
     public static void initCraftingRecipe(){
-        Catchball.initCraftingRecipe("basic", new BasicCatchball());
+        Catchball.initCraftingRecipe("basic", new BasicBall());
 
     }
 
@@ -47,7 +44,7 @@ public class BasicCatchball extends Catchball {
         gtaDataNBT.setInteger("use_count", _useCount);
 
         NBTCompound display = nbti.addCompound("display");
-        display.setString("Name", "{\"text\":\"Basic catch ball\",\"color\":\"white\",\"italic\":false}");
+        display.setString("Name", "{\"text\":\"Basic ball\",\"color\":\"white\",\"italic\":false}");
         NBTList<String> lore = display.getStringList("Lore");
         lore.add(0,"[{\"text\":\"Uses left : \",\"color\":\"gold\",\"italic\":false},{\"text\":\""+( GetThemAll._config.getConfig().getInt("max_uses")-_useCount)+"\",\"color\":\"white\",\"italic\":false}]");
 
