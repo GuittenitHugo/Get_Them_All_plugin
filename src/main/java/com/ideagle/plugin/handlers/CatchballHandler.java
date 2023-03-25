@@ -13,13 +13,11 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.projectiles.BlockProjectileSource;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -93,24 +91,50 @@ public class CatchballHandler implements Listener {
                         if (((_mobs.contains(hitEntity.getType()) && _isWhiteList)
                                 || (!_mobs.contains(hitEntity.getType()) && !_isWhiteList))
                                 || shooter.hasPermission("getthemall.catchball.catchforbiddenmob")) {
+
                             NBTEntity hitEntityNBT = new NBTEntity(hitEntity);
 
                             if (!snowballProjectileNBT
                                     .getCompound("Item")
                                     .getCompound("tag")
                                     .getCompound("get_them_all_data")
-                                    .getCompound("caught_mob_data").hasKey("mob_type")
+                                    .getCompound("caught_mob_data").hasTag("mob_type")
                             ) {
+
                                 /*storing caught mob data*/
 
                                 catchBallData._mobType = hitEntity.getType();
-                                catchBallData._mobNbt = hitEntityNBT;
+                                NBTContainer container = (NBTContainer) NBT.createNBTObject();
+                                List<String> keysToRemove =
+                                        Arrays.asList
+                                                ("Pos", "Motion",
+                                                "Rotation", "UUID",
+                                                "ActiveEffects", "OnGround",
+                                                "FallDistance", "PortalCooldown",
+                                                "DeathTime", "HurtTime", "Fire",
+                                                "Air", "Leashed", "FallFlying"
+                                                        );
+
+                                container.mergeCompound(hitEntityNBT);
+
+                                for (String key :
+                                        keysToRemove) {
+                                    container.removeKey(key);
+                                    if(container.hasTag(key)){
+                                        Bukkit.getLogger().warning("failed to remove tag "+key);
+                                    }
+                                }
+
+                                catchBallData._mobNbt = (NBTCompound) NBT.createNBTObject();
+                                catchBallData._mobNbt.mergeCompound(container);
+
+                                /*delete unnecessary data*/
 
                                 NBTCompound caughtMobData = snowballItemNBT.addCompound("get_them_all_data").addCompound("caught_mob_data");
 
                                 caughtMobData.setString("mob_type", hitEntity.getType().name());
 
-                                caughtMobData.addCompound("mob_nbt").mergeCompound(hitEntityNBT);
+                                caughtMobData.addCompound("mob_nbt").mergeCompound(caughtMobData);
 
                                 hitEntity.remove();
 
@@ -129,18 +153,22 @@ public class CatchballHandler implements Listener {
 
                     /* case 2 : snowball hits a block (make the mob appear if any inside snowball) */
                     if (hitBlock != null && catchBallData._mobType != null) {
-
+                        assert e.getHitBlockFace() != null;
 
                         if (((_mobs.contains(catchBallData._mobType) && _isWhiteList)
                                 || (!_mobs.contains(catchBallData._mobType) && !_isWhiteList))
                                 || shooter.hasPermission("getthemall.catchball.releaseforbiddenmob")) {
 
-                            if (catchBallData._type == BasicCatchball.TYPE)
+                            if (catchBallData._type == BasicCatchball.TYPE) {
+                                assert catchBallData instanceof BasicCatchball;
                                 ((BasicCatchball) catchBallData)._useCount++;
-                            if (catchBallData._type == BrittleCatchball.TYPE)
+                            }
+                            if (catchBallData._type == BrittleCatchball.TYPE) {
+                                assert catchBallData instanceof BrittleCatchball;
                                 ((BrittleCatchball) catchBallData)._used = true;
+                            }
 
-                            Location spawnLocation = hitBlock.getLocation().add(0.5, 1, 0.5);
+                            Location spawnLocation = hitBlock.getRelative(e.getHitBlockFace()).getLocation().add(0.5, 0, 0.5);
 
                             EntityType entityType = catchBallData._mobType;
 
@@ -149,17 +177,6 @@ public class CatchballHandler implements Listener {
                             Entity freedEntity = hitBlock.getWorld().spawnEntity(spawnLocation, entityType);
 
                             NBTEntity freedEntityNBT = new NBTEntity(freedEntity);
-
-                            NBTList<Double> Motion = catchBallData._mobNbt.getDoubleList("Pos");
-
-                            for (Double motionCoord :
-                                    Motion) {
-                                motionCoord = 0.;
-                            }
-
-                            catchBallData._mobNbt.getDoubleList("Pos");
-
-                            catchBallData._mobNbt.setFloat("FallDistance", 0f);
 
                             freedEntityNBT.mergeCompound(catchBallData._mobNbt);
 
@@ -186,6 +203,7 @@ public class CatchballHandler implements Listener {
 
                     snowballItemNBT = catchBallData.toNBTItem(snowballItemNBT);
                     if (catchBallData._mobNbt != null) {
+
                         snowballItemNBT.setInteger("HideFlags", 1);
                         snowballItem = snowballItemNBT.getItem();
                         snowballItem.addUnsafeEnchantment(Enchantment.SOUL_SPEED, 1);
@@ -203,9 +221,9 @@ public class CatchballHandler implements Listener {
     }
 
     private boolean isSnowballACatchBall(@NotNull NBTEntity snowballProjectileNBT){
-        if (snowballProjectileNBT.hasKey("Item")) {
-            if (snowballProjectileNBT.getCompound("Item").hasKey("tag")) {
-                return snowballProjectileNBT.getCompound("Item").getCompound("tag").hasKey("get_them_all_data");
+        if (snowballProjectileNBT.hasTag("Item")) {
+            if (snowballProjectileNBT.getCompound("Item").hasTag("tag")) {
+                return snowballProjectileNBT.getCompound("Item").getCompound("tag").hasTag("get_them_all_data");
             }
         }
         return false;
