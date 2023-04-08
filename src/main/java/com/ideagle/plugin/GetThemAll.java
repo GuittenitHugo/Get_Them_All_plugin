@@ -1,10 +1,13 @@
 package com.ideagle.plugin;
 
-import com.ideagle.plugin.catchballs.BasicCatchball;
-import com.ideagle.plugin.catchballs.BrittleCatchball;
-import com.ideagle.plugin.catchballs.PerfectCatchball;
+import com.ideagle.plugin.catchballs.BasicBall;
+import com.ideagle.plugin.catchballs.BrittleBall;
+import com.ideagle.plugin.catchballs.PerfectBall;
+import com.ideagle.plugin.commands.completions.GiveBallCommandCompletion;
+import com.ideagle.plugin.commands.executors.GiveBallCommandExecutor;
 import com.ideagle.plugin.handlers.CatchballHandler;
 import com.ideagle.plugin.util.ConfigUtils;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class GetThemAll extends JavaPlugin {
@@ -21,13 +24,19 @@ public final class GetThemAll extends JavaPlugin {
 
         /* initiating crafting recipes */
         if (_config.getConfig().getBoolean("recipes.allowed_to_craft.basic"))
-            BasicCatchball.initCraftingRecipe();
+            BasicBall.initCraftingRecipe();
         if (_config.getConfig().getBoolean("recipes.allowed_to_craft.brittle"))
-            BrittleCatchball.initCraftingRecipe();
+            BrittleBall.initCraftingRecipe();
         if (_config.getConfig().getBoolean("recipes.allowed_to_craft.perfect"))
-            PerfectCatchball.initCraftingRecipe();
+            PerfectBall.initCraftingRecipe();
 
         new CatchballHandler(this);
+
+        PluginCommand giveballCommand = getCommand("giveball");
+        if(giveballCommand != null) {
+            giveballCommand.setExecutor(new GiveBallCommandExecutor());
+            giveballCommand.setTabCompleter(new GiveBallCommandCompletion());
+        }
 
 
     }
@@ -38,10 +47,10 @@ public final class GetThemAll extends JavaPlugin {
 
         /* destroy crafting recipes */
         if (_config.getConfig().getBoolean("recipes.allowed_to_craft.basic"))
-            BasicCatchball.destroyCraftingRecipe();
+            BasicBall.destroyCraftingRecipe();
         if (_config.getConfig().getBoolean("recipes.allowed_to_craft.brittle"))
-            BrittleCatchball.destroyCraftingRecipe();
+            BrittleBall.destroyCraftingRecipe();
         if (_config.getConfig().getBoolean("recipes.allowed_to_craft.perfect"))
-            PerfectCatchball.destroyCraftingRecipe();
+            PerfectBall.destroyCraftingRecipe();
     }
 }

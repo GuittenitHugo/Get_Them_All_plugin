@@ -6,7 +6,7 @@
 
     <groupId>com.ideagle</groupId>
     <artifactId>plugin</artifactId>
-    <version>1.0.3</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
     <name>Get Them All</name>
@@ -93,7 +93,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.11.1</version>
+            <version>2.11.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

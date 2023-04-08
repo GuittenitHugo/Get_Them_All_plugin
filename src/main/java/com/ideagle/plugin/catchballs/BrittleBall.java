@@ -1,42 +1,32 @@
 package com.ideagle.plugin.catchballs;
 
-import com.ideagle.plugin.GetThemAll;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTList;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.checkerframework.checker.units.qual.A;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import static org.bukkit.Bukkit.getServer;
 
-public class BrittleCatchball extends Catchball {
+public class BrittleBall extends Catchball {
 
     public static int TYPE = 2;
     public boolean _used;
 
-    public BrittleCatchball(NBTEntity nbtEntity) {
+    public BrittleBall(NBTEntity nbtEntity) {
         super(nbtEntity);
         _type = TYPE;
         _used = nbtEntity.getCompound("Item").getCompound("tag").getCompound("get_them_all_data").getBoolean("used");
     }
 
-    public BrittleCatchball(){
+    public BrittleBall(){
         super();
         _type = TYPE;
         _used = false;
     }
 
     public static void initCraftingRecipe(){
-        Catchball.initCraftingRecipe("brittle", new BrittleCatchball());
+        Catchball.initCraftingRecipe("brittle", new BrittleBall());
     }
 
     public static void destroyCraftingRecipe(){
@@ -51,7 +41,7 @@ public class BrittleCatchball extends Catchball {
         gtaDataNBT.setBoolean("used", _used);
 
         NBTCompound display = nbti.addCompound("display");
-        display.setString("Name", "{\"text\":\"Brittle catch ball\",\"color\":\"gray\",\"italic\":true}");
+        display.setString("Name", "{\"text\":\"Brittle ball\",\"color\":\"gray\",\"italic\":true}");
         NBTList<String> lore = display.getStringList("Lore");
         lore.add(0,"{\"text\":\"Only one use\",\"color\":\"red\",\"bold\":true,\"italic\":true}");
 

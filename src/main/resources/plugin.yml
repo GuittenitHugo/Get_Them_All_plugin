@@ -5,3 +5,10 @@ api-version: 1.19
 authors: [ Ir0n_eagle ]
 description: A plugin aiming at moving and collecting mobs easier, inspired by the pokemon serie
 depend: [ NBTAPI ]
+commands:
+  giveball:
+    description: Gives a catchball to the sender
+    usage: /giveball [type] (player) (count)
+    aliases: [gb]
+    permission: getthemall.command.giveball
+    permission-message: You do not have permission to use this command.
